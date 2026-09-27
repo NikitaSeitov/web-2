@@ -1,0 +1,105 @@
+:root{
+  --bg:#030406;
+  --glass-bg: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.11);
+  --accent: rgba(180,210,255,0.9);
+  --muted: rgba(255,255,255,0.75);
+  --soft-glow: rgba(100,160,255,0.08);
+  --radius: 14px;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+*{box-sizing:border-box}
+html,body,#app{height:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--muted);
+  font-family:var(--font-sans);
+}
+
+.media{position:fixed;inset:0;z-index:0;overflow:hidden}
+.media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.03) saturate(1.02)}
+.video-dim{position:absolute;inset:0;background:rgba(2,4,10,0.36);opacity:0;transition:opacity .3s ease;pointer-events:none;z-index:1}
+.video-dim[hidden]{display:none}
+
+#modalBackdrop{
+  position:fixed;
+  inset:0;
+  z-index:20;
+  background:rgba(2, 4, 10, 0.06);
+  backdrop-filter:blur(10px) saturate(110%);
+  -webkit-backdrop-filter:blur(10px) saturate(110%);
+  opacity:0;
+  transition:opacity .25s ease;
+  pointer-events:none;
+}
+#modalBackdrop[hidden]{display:none}
+
+.video-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.6));}
+.placeholder-inner{display:flex;flex-direction:column;align-items:center;gap:18px;color:var(--muted);opacity:0.95}
+.placeholder-inner svg{color:var(--muted);opacity:0.9}
+.placeholder-text{font-size:18px;letter-spacing:0.06em}
+
+
+/* Overlay positioning near edges (not centered) */
+.overlay{position:absolute;inset:0;z-index:2;pointer-events:none}
+.overlay .overlay-inner{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:flex-start;padding:6vh 6vw;pointer-events:none}
+.overlay.top .overlay-inner{top:0;align-items:flex-start}
+.overlay.bottom .overlay-inner{bottom:0;align-items:flex-end}
+
+.top-left{pointer-events:auto;align-self:flex-start}
+.top-right{pointer-events:auto;align-self:flex-start}
+.bottom-center{position:absolute;left:0;right:0;bottom:60px;pointer-events:auto;display:flex;justify-content:center;align-items:flex-end;padding:0}
+
+.title{margin:0;font-weight:600;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;text-shadow:0 10px 30px rgba(0,0,0,0.9), 0 0 18px rgba(160,200,255,0.35);pointer-events:auto}
+.caption{margin:0;max-width:560px;color:rgba(255,255,255,0.78);font-size:15px;line-height:1.4;pointer-events:auto;text-align:right}
+.caption.below{max-width:420px;text-align:center;color:rgba(230,240,255,0.9);margin:0}
+
+.interaction-stack{display:flex;flex-direction:column;align-items:center;gap:12px}
+.buttons-row{display:flex;flex-direction:row;align-items:stretch;justify-content:center;gap:28px}
+.survey-group{display:flex;flex-direction:column;align-items:center;gap:12px}
+.glass-btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--accent);display:flex;align-items:center;justify-content:center;text-align:center;min-width:340px;flex:0 0 340px;min-height:68px;padding:14px 20px}
+
+.controls{margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:14px}
+
+.glass-btn{appearance:none;border:1px solid var(--glass-border);background:var(--glass-bg);backdrop-filter:blur(8px) saturate(110%);-webkit-backdrop-filter:blur(8px);padding:14px 28px;border-radius:12px;color:var(--accent);font-weight:600;letter-spacing:0.08em;cursor:pointer;transition:box-shadow .22s ease, background .22s ease, border-color .22s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,0.06),0 6px 18px var(--soft-glow);pointer-events:auto;background-clip:padding-box}
+.glass-btn:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,0.08),0 14px 28px var(--soft-glow);border-color:rgba(255,255,255,0.14)}
+.glass-btn:active{box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),0 6px 12px rgba(100,150,255,0.12)}
+.glass-btn:focus{outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,0.08),0 0 0 4px rgba(150,190,255,0.06),0 14px 28px var(--soft-glow)}
+
+/* Typography & scaling */
+.title{font-size:clamp(28px,6vw,64px)}
+.glass-btn{font-size:clamp(14px,1.1vw,20px)}
+
+/* Survey & charts layout tweaks for large screens */
+.survey-panel{max-width:1100px}
+.charts-panel{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1400px,94vw);max-height:90vh;z-index:999;}
+
+/* Larger screens: 1920+, 2560+, 4K */
+@media (min-width:1920px){
+  :root{--radius:16px}
+  .title{font-size:72px}
+  .caption{font-size:16px}
+}
+@media (min-width:2560px){
+  .title{font-size:88px}
+  .glass-btn{padding:16px 36px}
+}
+@media (min-width:3840px){
+  .title{font-size:108px}
+  .caption{font-size:18px}
+}
+
+/* Minimal accessibility tweaks */
+.glass-btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* ensure overlay content readable on very small heights */
+@media (max-height:640px){
+  .overlay{padding:4vh 4vw}
+  .title{font-size:28px}
+}
+
+.survey-cta{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px 18px 14px;text-align:center;max-width:440px;min-height:68px;min-width:340px;flex:0 0 340px}
+.cta-main{display:block;font-weight:700;letter-spacing:0.08em;line-height:1.2;text-align:center}
+.cta-copy{display:block;max-width:520px;margin:0;font-size:13px;line-height:1.45;letter-spacing:0.04em;color:rgba(230,240,255,0.8);text-align:center;font-weight:400}
